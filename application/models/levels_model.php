@@ -166,7 +166,7 @@ class levels_model extends CI_Model {
 				
 				//add level compeltion date to hints_logs database
 				$this->db->set('level', $current_level+1);
-				$this->db->set('user_fb_uid', $fb_uid);
+				$this->db->set('fb_uid', $fb_uid);
 			    $this->db->set('time', 'NOW()', FALSE);
 				$this->db->insert('hints_log'); 
 
