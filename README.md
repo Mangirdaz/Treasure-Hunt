@@ -46,6 +46,15 @@ Some hosting providers are seen to cause problems with the Facebook login featur
 Update:
 Facebook has updated the Graph API and there are some breaking changes. This application is not actively maintained, and could need some changes to work correctly. Please feel free to send a pull request if you're working on it.
 
+Update 2015-08-31:
+We used this platfrm for more rapid and faster game. WE introduced Hints as an option. Hints are shown to user if he cant get answer in time. Hints are defined by two table data. hints - where yyou add hint content
+and minutes, when it will be shown after level is opened and level id where it is have to be showed. 
+Hints are opened by logging when level was opened and doing left join on tables.
+For each new game hints_logs table need to be cleaned. 
+
+Its not very nice solution as it requires manual adding to dabatase and in theory it requires separate controler, but it was done in few minutes just before game so we could sit and enjoy could drinks, while everybody is running and solving stuff :)
+
+
 License
 =======
 This project is licensed under GNU GENERAL PUBLIC LICENSE Version 2.

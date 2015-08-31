@@ -90,6 +90,43 @@ CREATE TABLE IF NOT EXISTS `ci_sessions` (
   KEY `last_activity_idx` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Table structure for table  `hints_log`
+--
+
+CREATE TABLE IF NOT EXISTS `hints_log` (
+  `id` int(11) NOT NULL,
+  `level` int(10) NOT NULL,
+  `fb_uid` varchar(100) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=MyISAM AUTO_INCREMENT=340 DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for table `hints_log`
+--
+ALTER TABLE `hints_log`
+  ADD PRIMARY KEY (`id`);
+  
+ALTER TABLE `hints_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;  
+
+
+--
+-- Table structure for table `hints`
+--
+
+CREATE TABLE IF NOT EXISTS `hints` (
+  `id` int(11) NOT NULL,
+  `level` int(10) NOT NULL,
+  `content` varchar(250) NOT NULL,
+  `activatetimer` int(10) NOT NULL COMMENT 'time in minutes from activation time'
+) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
+
+ALTER TABLE `hints`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `hints`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -45,6 +45,50 @@
 			<?php echo'<!--'.$level->html_comment.'-->'; ?>
 		</div>
 	</div>
+	
+	</br>
+	<div class="row">
+		<div class="col-lg-2 col-lg-offset-2">
+			<div class="input-group input-group-lg">
+				<?php
+				$hintcount=0;
+				
+				if ($hints != null){
+					echo '<h3>Hints:</h3>';
+
+					foreach ($hints as $hint)
+					{
+						$date = date('Y-m- d H:i:m');
+						$content = $hint["hint"];
+											
+						
+						if (time() >= strtotime($hint['timetoshow']))
+						{	$hintcount++;					
+							echo '<div class="row"><div class="container">';
+							echo '<b>Hint number ';
+							echo $hintcount;
+							echo '</b>:</br>';
+							echo $content;
+							echo '</div></div>';
+							echo "</br>";
+						}
+						else
+							{
+							echo "Next hint at:";
+							echo $hint['timetoshow'];	
+							echo "</br>";
+							echo "</br>";
+								
+							}
+					}
+				}
+				?>
+			</div>
+		</div>
+	</div>
+	
+	
+	
 	<?php 
 	//if level difficulty is 3 (hard), the user is prompted about goodies
 	//for the first person who solves it.

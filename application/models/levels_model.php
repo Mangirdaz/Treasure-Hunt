@@ -1,5 +1,71 @@
 <?php
 class levels_model extends CI_Model {
+	
+	//get hints and show anly for particular user on defined time from DB
+	function get_hints(){
+		
+		$fb_uid = $this->session->userdata('facebook_uid');
+		
+		$data = array();
+
+		$details = array(
+			'hint' => NULL,
+			'timetoshow' => NULL,
+			'level' => NULL
+		);
+
+		if($fb_uid=='' || $fb_uid==NULL){
+			return 0;
+		}
+		
+		$sql = "SELECT level FROM users WHERE fb_uid = ?"; 
+		$query = $this->db->query($sql, $fb_uid);
+
+		if ($query->num_rows() > 0)
+		{
+		   $row = $query->row();
+		   $current_level = $row->level;
+		}
+		
+		$sql = "SELECT 
+				hints.content, 
+				DATE_ADD(DATE_FORMAT(hints_log.time, '%Y-%m-%d %H:%i:%s'), INTERVAL hints.activatetimer MINUTE) as timetoshow,
+				hints.level  
+			FROM 
+				hints 
+			LEFT JOIN 
+				hints_log on hints.level = hints_log.level
+			WHERE 
+			   hints.level = (Select level from hints_log where fb_uid = $fb_uid and level = $current_level LIMIT 1)
+			AND 
+				hints_log.fb_uid = $fb_uid" ; 
+			   
+			   //print_r($sql);
+			   
+		$query = $this->db->query($sql);
+		
+		if ($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $row)
+			{
+				//Only regular users are shown in the leaderboard
+				//banned users and admins have a rank 0, and are excluded.
+				if($row->level == $current_level){
+
+					$details['hint'] = $row->content;
+					$details['timetoshow'] = $row->timetoshow;
+					$details['level'] = $row->level;
+					array_push($data, $details);
+				}
+			}
+			return $data;
+		}else{
+			//couldn't find any rows!?
+			return false;
+		}
+		
+		
+	}
 
 	function get_level() {
 		//get level for the current user
@@ -97,6 +163,12 @@ class levels_model extends CI_Model {
 				$this->db->where('fb_uid', $fb_uid);
 				$this->db->set('passtime', 'NOW()', FALSE);
 				$this->db->update('users'); 
+				
+				//add level compeltion date to hints_logs database
+				$this->db->set('level', $current_level+1);
+				$this->db->set('user_fb_uid', $fb_uid);
+			    $this->db->set('time', 'NOW()', FALSE);
+				$this->db->insert('hints_log'); 
 
 				//post the details to facebook, just for promotion
 				$this->load->model('user_model');

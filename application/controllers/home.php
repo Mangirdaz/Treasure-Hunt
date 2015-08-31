@@ -52,6 +52,7 @@ class Home extends CI_Controller {
 				//Load the level
 				$this->load->model('levels_model');
 				$level_details = $this->levels_model->get_level();
+				$hints_details = $this->levels_model->get_hints();
 
 				if($level_details){
 					//have a look in the views folder for details
@@ -59,6 +60,7 @@ class Home extends CI_Controller {
 					$data['page'] = 'arena';
 					$data['level'] = $level_details;
 					$data['header_data'] = array('title' => $level_details->title);
+					$data['hints']= $hints_details;
 					$this->load->view('template', $data);
 				}else{
 					//User is in the highest level. Load wait view.
